@@ -1,0 +1,15 @@
+
+CIE Illuminants and Standard Observer
+
+
+Macbeth ColorChecker
+---------------------
+1. Excel sheet  - Spectral data 5nm
+Data from N. Ohta, "The Basis of Color Reproduction Engineering (Japanese)", published by Corona-sha Co of Japan in 1997
+http://www.cis.rit.edu/mcsl/online/cie.php
+
+
+2. Danny Pascale - averaged spectral data from 30 charts - CGATS format - 10nm
+http://www.babelcolor.com/main_level/ColorChecker.htm#ColorChecker_data
+
+
