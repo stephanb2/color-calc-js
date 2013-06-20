@@ -7,30 +7,85 @@
 	
   <style type="text/css">
    body {
-      font-family: sans-serif;
+      font-family: arial, sans-serif;
       font-size: 90%;
       margin: 50px;
-      max-width: 800px;
+      width: 720px;
    }
 
-   table {
-      border-collapse:collapse;
+   p, h1, h2, h3, h4 {
+      margin-top: 0px;
    }
 
-   table, th, td {
-      border: 1px solid black;
-      min-width: 1em;
-   }
+    #main {
+        width: auto;
+        margin-left: 200px;
+        padding:10px;
+        /* for TESTING purposes only - comment out for production
+        border: 1px solid #acf;
+        */
+    }
 
-   #colorTable td { 
-      padding: 4px;
+    #side {
+        float:left;
+        width:180px;
+        padding:10px;
+        /* for TESTING purposes only - comment out for production
+        border: 1px solid #acf;
+        */
+    }
+    
+    #footer {
+        clear: both;
+    }
+
+
+   #colorTable {
+      border: 3px solid #333;
+      border-radius: 6px;
+      -moz-border-radius: 6px;
+      -webkit-border-radius: 6px;
+      background: #333;
+      border-spacing: 1px;
+      table-layout:fixed;
+      font-size: 10px;
+   } 
+
+   #colorTable td {
+      border: 2px solid #333;
+      background: #333;
+      width: 14px;
+      max-width: 14px;
+      padding: 2px;
       cursor: pointer;
+      overflow: hidden;
    }
    
-   .active {
-      border: 2px solid red;
+   #colorTable .active {
+      border: 2px solid #ddd; 
    }
    
+   .dataTable {
+       background: #fff;
+       /* border-collapse: collapse; */
+       border: 1px solid #666;
+       border-radius: 6px;
+       -moz-border-radius: 6px;
+       -webkit-border-radius: 6px;
+   }
+   
+   .dataLabel {
+       font-weight: bold;
+   }
+   
+   .dataTable td {
+       background: #fff;
+       border: none;
+       padding: 4px;
+       min-width: 5em;
+   }
+   
+
    </style>
 
   <script src="./jquery-1.9.1.min.js"></script>
@@ -40,12 +95,22 @@
 
 <body>
 
-<table id="colorTable">
-<!--  <tr>
-  	<td>1A</td><td>1B</td><td>1C</td>
-  </tr>
-  -->
-</table>
+<div id="side">
+    <table id="colorTable"></table>
+</div>
+
+<div id="main">
+    <table class="dataTable">
+        <tr id="XYZ"></tr>
+    </table>
+    
+    <!--
+    <div id="XYZ">XYZ: </div>
+
+    <h2>foo bar de quux.</h2> <p>is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+    -->
+</div>
+
 
 <script src="./macbeth02.js"></script>
 

@@ -160,8 +160,8 @@ SB.macbeth = (function ($) {
 
     /*----- user interface ---------------------------*/
 
-    function buildTable(table_id){
-        var i, j, row,
+    function buildTable(table_id) {
+        var i, j, row, cell, clcolor,
             nrows = 4,
             ncols = 6;
 
@@ -169,17 +169,49 @@ SB.macbeth = (function ($) {
             row = $("<tr>");
             
             for (j = 0; j < ncols; j++) {
-                $("<td>").text(value + (j + 1)).appendTo(row);
+                clcolor = "#f93";
+                cell = $("<td>").text(value + (j + 1));
+                cell.css({"background":clcolor, "color":"#fff"});
+                cell.appendTo(row);
             }
              
             $(table_id).append(row);
         });
     }
+    
+
+    
+    function showResults_div(CC_Id) {
+        var XYZ = SB.macbeth.specToXYZ(SB.data.GMCCavg30, CC_Id, "C", "CIEobs31");
+        var result;
+        result = "<span>" + XYZ[0].toFixed(4) + "</span> ";
+        result += "<span>" + XYZ[1].toFixed(4) + "</span> <span>" + XYZ[2].toFixed(4) + "</span>";
+        $("#XYZ").append(result);
+    }
+    
+    
+    function showResults(CC_Id) {
+    
+        $("#XYZ").html($("<td>").text("XYZ").addClass("dataLabel"));
+        
+        var XYZ = SB.macbeth.specToXYZ(SB.data.GMCCavg30, CC_Id, "C", "CIEobs31"); 
+        $.each(XYZ, function(index, elm) {
+            $("#XYZ").append($("<td>").text( elm.toFixed(4) ));
+        });
+    }
+    
+    
+    function init() {
+        $("#colorTable tr td:contains('A1')").toggleClass("active");
+        showResults("A1");
+    }
+
 
     function onCellClick(event) {
         $("#colorTable .active").toggleClass("active");
         $(this).toggleClass("active");
-        alert($(this).text());
+        
+        showResults($(this).text());
     }
 	
 	return {
@@ -187,7 +219,8 @@ SB.macbeth = (function ($) {
 	    onCellClick:  onCellClick,
 	    sumProduct: sumProduct,
 	    sumProduct2f: sumProduct2f,
-	    specToXYZ: specToXYZ
+	    specToXYZ: specToXYZ,
+	    init: init
 	}
 	
 }(jQuery));
@@ -197,13 +230,15 @@ SB.macbeth = (function ($) {
 
 window.onload = function () {
    SB.macbeth.buildTable("#colorTable");
-   
+   SB.macbeth.init();
    
    $("#colorTable tr td").on("click", SB.macbeth.onCellClick);
    
+   /*
    console.log(SB.macbeth.sumProduct2f(SB.data.CIEobs31,"x",SB.data.CIEil,"C"));
    console.log(SB.macbeth.sumProduct(SB.data.CIEobs31,"x",SB.data.CIEil,"C"));
    console.log(SB.macbeth.specToXYZ(SB.data.GMCCavg30, "A1", "C", "CIEobs31"));
+   */
 }
    
 
