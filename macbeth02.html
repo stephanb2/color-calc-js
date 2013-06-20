@@ -41,18 +41,18 @@
 
 
    #colorTable {
-      border: 3px solid #333;
+      border: 3px solid #383838;
       border-radius: 6px;
       -moz-border-radius: 6px;
       -webkit-border-radius: 6px;
-      background: #333;
+      background: #383838;
       border-spacing: 1px;
       table-layout:fixed;
       font-size: 10px;
    } 
 
    #colorTable td {
-      border: 2px solid #333;
+      border: 2px solid #383838;
       background: #333;
       width: 14px;
       max-width: 14px;
@@ -62,35 +62,43 @@
    }
    
    #colorTable .active {
-      border: 2px solid #ddd; 
+      border: 1px solid #fff; 
    }
    
    .dataTable {
-       background: #fff;
-       /* border-collapse: collapse; */
-       border: 1px solid #666;
-       border-radius: 6px;
-       -moz-border-radius: 6px;
-       -webkit-border-radius: 6px;
+      background: #fff;
+      /* border-collapse: collapse; */
+      border: 1px solid #666;
+      border-radius: 6px;
+      -moz-border-radius: 6px;
+      -webkit-border-radius: 6px;
    }
    
    .dataLabel {
-       font-weight: bold;
+      font-weight: bold;
    }
    
    .dataTable td {
-       background: #fff;
-       border: none;
-       padding: 4px;
-       min-width: 5em;
+      background: #fff;
+      border: none;
+      padding: 4px;
+      min-width: 5em;
    }
    
-
+   select {
+      background: transparent;
+      width: 10em;
+      padding: 4px;
+      line-height: 1;
+      border-radius: 4px;
+   }
    </style>
 
-  <script src="./jquery-1.9.1.min.js"></script>
+
+   <script src="js/jquery-1.9.1.min.js"></script>
+
 </head>
-	
+
 
 
 <body>
@@ -100,13 +108,25 @@
 </div>
 
 <div id="main">
+
+
+    <label>Reference Illuminant : </label>
+    <select id="illumRef" autocomplete="off">
+        <option value="A">A</option>
+        <option value="C">C</option>
+        <option value="D50" selected="selected">D50</option>
+        <option value="D65">D65</option>
+    </select>
+
+
+    <p>&nbsp;</p>
+    
     <table class="dataTable">
         <tr id="XYZ"></tr>
+        <tr id="xyY"></tr>
     </table>
     
     <!--
-    <div id="XYZ">XYZ: </div>
-
     <h2>foo bar de quux.</h2> <p>is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
     -->
 </div>
