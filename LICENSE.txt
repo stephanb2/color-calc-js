@@ -1,0 +1,52 @@
+This project is released under the GNU General Public License (GPL) version 3
+However, it contains data sets that are not provided under the GNU General
+Public License  (GPL) version 3.
+
+This page lists the licenses used, names the authors, and links to the places 
+where it is used.
+
+------------------------------------------------------------------------------
+
+color-calc-js: JavaScript Color Calculator
+
+Copyright (c) 2013 Stephan Bourgeois <stephanb2@hotmail.com>
+
+License: GNU General Public License (GPL) version 3
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+On Debian systems, the complete text of the GNU General Public
+License can be found in /usr/share/common-licenses/GPL file.
+
+------------------------------------------------------------------------------
+
+CIE Reference Illuminant, Reference Observer and Reference White data
+
+Copyright (c) CIE 2000 - 2013
+CIE Central Bureau, Kegelgasse 27, A-1030 Vienna, Austria
+
+------------------------------------------------------------------------------
+
+Macbeth ColorChecker Spectral Data - 30 samples average
+
+Copyright (c) 2003-2012 The BabelColor Company.
+BabelColor is a registered Trademark and the BabelColor logos are Trademarks of 
+Danny Pascale and the BabelColor Company.
+
+------------------------------------------------------------------------------
+Macbeth ColorChecker Spectral Data from N. Ohta
+
+Data are from N. Ohta, "The Basis of Color Reproduction Engineering (Japanese)", 
+published by Corona-sha Co of Japan in 1997
+

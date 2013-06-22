@@ -3,7 +3,7 @@
 <head>
 
   <meta charset="utf-8"/>
-  <title>Macbeth chart test 02</title>
+  <title>Macbeth ColorChecker Calculator</title>
 	
   <style type="text/css">
    body {
@@ -16,6 +16,16 @@
    p, h1, h2, h3, h4 {
       margin-top: 0px;
    }
+   
+   h1, h2 {
+      color: #666;
+      border-bottom: 1px solid #ccc;
+   }
+
+    #header{
+       width: 100%;
+       padding: 0px 10px;
+    }
 
     #main {
         width: auto;
@@ -41,19 +51,18 @@
 
 
    #colorTable {
-      border: 3px solid #383838;
+      border: 3px solid #282828;
       border-radius: 6px;
       -moz-border-radius: 6px;
       -webkit-border-radius: 6px;
-      background: #383838;
+      background: #282828;
       border-spacing: 1px;
       table-layout:fixed;
       font-size: 10px;
    } 
 
    #colorTable td {
-      border: 2px solid #383838;
-      background: #333;
+      border: 2px solid #282828;
       width: 14px;
       max-width: 14px;
       padding: 2px;
@@ -100,15 +109,16 @@
 </head>
 
 
-
 <body>
+
+<div id="header"><h1>Macbeth ColorChecker Calculator</h1></div>
 
 <div id="side">
     <table id="colorTable"></table>
 </div>
 
-<div id="main">
 
+<div id="main">
 
     <label>Reference Illuminant : </label>
     <select id="illumRef" autocomplete="off">
@@ -124,6 +134,7 @@
     <table class="dataTable">
         <tr id="XYZ"></tr>
         <tr id="xyY"></tr>
+        <tr id="Lab"></tr>
     </table>
     
     <!--
