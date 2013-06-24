@@ -1,7 +1,14 @@
 var SB = {};
 
+
 SB = {
-    "data":{"CIEobs31":{}, "CIEobs64":{}, "CIEil":{}, "GMCCavg30":{}, "CCdisplay":{} }
+    "data": {
+        "CIEobs31":{}, 
+        "CIEobs64":{}, 
+        "CIEil":{}, 
+        "GMCCavg30":{}, 
+        "CCdisplay":{} 
+    }
 };
 
 /*
@@ -37,16 +44,16 @@ SB.data.CIEobs64 = {
 };
 
 /*
- * CIE Standard Illuminants
+ * CIE Standard Illuminants - averaged to 10nm - box window.
  */
 SB.data.CIEil = {
     "start":300,
     "end":780,
     "step":10,
-    "A":[0.930483, 1.35769, 1.92508, 2.65981, 3.58968, 4.74238, 6.14462, 7.82135, 9.7951, 12.0853, 14.708, 17.6753, 20.995, 24.6709, 28.7027, 33.0859, 37.8121, 42.8693, 48.2423, 53.9132, 59.8611, 66.0635, 72.4959, 79.1326, 85.947, 92.912, 100, 107.184, 114.436, 121.731, 129.043, 136.346, 143.618, 150.836, 157.979, 165.028, 171.963, 178.769, 185.429, 191.931, 198.261, 204.409, 210.365, 216.12, 221.667, 227, 232.115, 237.008, 241.675],
-    "C":[0, 0, 0.01, 0.4, 2.7, 7, 12.9, 21.4, 33, 47.4, 63.3, 80.6, 98.1, 112.4, 121.5, 124, 123.1, 123.8, 123.9, 120.7, 112.1, 102.3, 96.9, 98, 102.1, 105.2, 105.3, 102.3, 97.8, 93.2, 89.7, 88.4, 88.1, 88, 87.8, 88.2, 87.9, 86.3, 84, 80.2, 76.3, 72.4, 68.3, 64.4, 61.5, 59.2, 58.1, 58.2, 59.1],
-    "D50":[0.019, 2.051, 7.778, 14.748, 17.948, 21.01, 23.942, 26.961, 24.488, 29.871, 49.308, 56.513, 60.034, 57.818, 74.825, 87.247, 90.612, 91.368, 95.109, 91.963, 95.724, 96.613, 97.129, 102.099, 100.755, 102.317, 100, 97.735, 98.918, 93.499, 97.688, 99.269, 99.042, 95.722, 98.857, 95.667, 98.19, 103.003, 99.133, 87.381, 91.604, 92.889, 76.854, 86.511, 92.58, 78.23, 57.692, 82.923, 78.274],
-    "D65":[0.0341, 3.2945, 20.236, 37.0535, 39.9488, 44.9117, 46.6383, 52.0891, 49.9755, 54.6482, 82.7549, 91.486, 93.4318, 86.6823, 104.865, 117.008, 117.812, 114.861, 115.923, 108.811, 109.354, 107.802, 104.79, 107.689, 104.405, 104.046, 100, 96.3342, 95.788, 88.6856, 90.0062, 89.5991, 87.6987, 83.2886, 83.6992, 80.0268, 80.2146, 82.2778, 78.2842, 69.7213, 71.6091, 74.349, 61.604, 69.8856, 75.087, 63.5927, 46.4182, 66.8054, 63.3828]
+    "A":[1.0293465, 1.48994, 2.09744, 2.87921, 3.86308, 5.07654, 6.54591, 8.295575, 10.34735, 12.7198, 15.428, 18.483, 21.89165, 25.6567, 29.77675, 34.24635, 39.05615, 44.19335, 49.64205, 55.38355, 61.39655, 67.658, 74.1431, 80.82595, 87.6797, 94.67715, 101.791, 108.9935, 116.258, 123.5585, 130.87, 138.167, 145.4265, 152.627, 159.7475, 166.769, 173.673, 180.4435, 187.065, 193.5245, 199.81, 205.91, 211.8165, 217.52, 223.014, 228.2925, 233.352, 238.189, 241.675],
+    "C":[0, 0, 0.105, 0.975, 3.775, 8.475, 15.05, 24.45, 36.46, 51.285, 67.555, 85.065, 101.95, 115.075, 122.475, 123.8, 123.2, 123.945, 123.41, 118.8, 109.54, 100.555, 96.84, 98.97, 103.025, 105.435, 104.705, 101.225, 96.615, 92.21, 89.265, 88.295, 88.08, 87.93, 87.895, 88.2, 87.56, 85.8, 83.105, 79.22, 75.33, 71.4, 67.3, 63.6, 60.85, 58.85, 58.05, 58.35, 59.1],
+    "D50":[0.527, 3.4825, 9.5205, 15.548, 18.7135, 21.743, 24.6965, 26.3425, 25.8335, 34.73, 51.109, 57.393, 59.48, 62.0695, 77.9305, 88.0885, 90.801, 92.303, 94.3225, 92.903, 95.9465, 96.742, 98.3715, 101.763, 101.1455, 101.738, 99.434, 98.031, 97.563, 94.546, 98.083, 99.212, 98.212, 96.506, 98.0595, 96.298, 99.3935, 102.0355, 96.195, 88.4365, 91.925, 88.8805, 79.2685, 88.0285, 88.9925, 73.0955, 63.9995, 81.761, 78.274],
+    "D65":[0.8492, 7.52985, 24.44035, 37.7773, 41.1895, 45.34335, 48.001, 51.5607, 51.14365, 61.67485, 84.93765, 91.97245, 91.7444, 91.22795, 107.9005, 117.209, 117.074, 115.1265, 114.145, 108.9465, 108.966, 107.049, 105.5145, 106.868, 104.315, 103.0345, 99.08355, 96.19765, 94.0124, 89.01575, 89.9044, 89.124, 86.59615, 83.39125, 82.7811, 80.07375, 80.7304, 81.2794, 76.14345, 70.19325, 72.29405, 71.16275, 63.6744, 71.18595, 72.2134, 59.29905, 51.515, 65.94975, 63.3828]
 };
 
 /*
@@ -94,7 +101,8 @@ SB.data.CCdisplay = {
 
 
 SB.macbeth = (function ($) {
-
+    'use strict';
+    
     var currentCell, illumRef, observRef;
 
 	/*
@@ -113,7 +121,8 @@ SB.macbeth = (function ($) {
             offsetB = (start - seriesB.start) / step,
             sum = 0;
             
-        console.assert(seriesA.step === seriesB.step, "series must have equal steps");
+        //FIXME: chrome specific
+        //console.assert(seriesA.step === seriesB.step, "series must have equal steps");
         
         for (x = start; x <= end; x += step) {
             sum += seriesA[idA][offsetA + i] * seriesB[idB][offsetB + i];
@@ -142,10 +151,11 @@ SB.macbeth = (function ($) {
             offset = [],
             prod, sum;
                
-        for(i = 0; i<arguments.length; i++) {
+        for(i = 0; i<arguments.length; i+=1) {
         	series.push(arguments[i]);
-        	i++;
-        	console.assert(i<arguments.length, "sumProduct requires even number of arguments");
+        	i+=1;
+        	//FIXME: chrome specific
+        	//console.assert(i<arguments.length, "sumProduct requires even number of arguments");
         	ids.push(arguments[i]);
         }
         
@@ -157,9 +167,10 @@ SB.macbeth = (function ($) {
                 return n.end;
             })
         );
-        step = series[0].step
+        step = series[0].step;
         
-        /* console.assert(seriesA.step === seriesB.step, "series must have equal steps"); */
+        //FIXME: chrome specific
+        //console.assert(seriesA.step === seriesB.step, "series must have equal steps");
         
         offset = jQuery.map(series, function(n, i){
                 return (start - n.start)/step;
@@ -171,7 +182,7 @@ SB.macbeth = (function ($) {
         /* in this loop i is the index, x is the guard */
         for (x = start; x <= end; x += step) {
             prod = 1;
-            for (j = 0; j < series.length; j++) {
+            for (j = 0; j < series.length; j += 1) {
                /* we need: seriesJ.idJ[offsetJ + i]
                 * using object as associative array syntax: seriesJ[idJ][offsetJ + i]
                 */
@@ -203,11 +214,10 @@ SB.macbeth = (function ($) {
         var sum = XYZ[0] + XYZ[1] + XYZ[2];
         
         if (sum === 0) {
-        /* TODO: set x and y to the chromaticity coordinates of the reference white */
+            /* TODO: set x and y to the chromaticity coordinates of the reference white */
             return [0, 0, 0];
-        } else {
-            return [ XYZ[0]/sum, XYZ[1]/sum, XYZ[1] ];
         }
+        return [ XYZ[0]/sum, XYZ[1]/sum, XYZ[1] ];
     }
     
     
@@ -224,9 +234,8 @@ SB.macbeth = (function ($) {
         f_xyz = jQuery.map(xyz_r, function(val, i){
             if (val > epsilon) {
                 return Math.pow(val, inv3);
-            } else {
-                return (kappa*val + 16) / 116;
             }
+            return (kappa*val + 16) / 116;
         });
         
         return [ 116*f_xyz[1] - 16, 500*(f_xyz[0]-f_xyz[1]), 200*(f_xyz[1]-f_xyz[2]) ];     
@@ -236,14 +245,13 @@ SB.macbeth = (function ($) {
     /*----- user interface ---------------------------*/
 
     function buildCCTable(table_id) {
-        var i, j, row, cell, clcolor,
-            nrows = 4,
+        var j, row, cell, cellcolor,
             ncols = 6;
 
         $.each (['A','B','C','D'], function(i, value) {
             row = $("<tr>");
             
-            for (j = 0; j < ncols; j++) {
+            for (j = 0; j < ncols; j+=1) {
                 cellcolor = SB.data.CCdisplay[value + (j+1)];
                 cell = $("<td>").text(value + (j+1));
                 cell.css({"background":cellcolor, "color":cellcolor});
@@ -260,21 +268,21 @@ SB.macbeth = (function ($) {
     function showResults(CC_Id) {
     
         $("#XYZ").html($("<td>").text("XYZ").addClass("dataLabel"));
+        $("#xyY").html($("<td>").text("xyY").addClass("dataLabel"));
+        $("#Lab").html($("<td>").text("Lab").addClass("dataLabel"));
         
         var XYZ = specToXYZ(SB.data.GMCCavg30, CC_Id, illumRef, observRef); 
-        $.each(XYZ, function(index, elm) {
+        $.each(XYZ, function(i, elm) {
             $("#XYZ").append($("<td>").text( elm.toFixed(4) ));
         });
-        
-        $("#xyY").html($("<td>").text("xyY").addClass("dataLabel"));
+
         var xyY = XYZtoxyY(XYZ);
-        $.each(xyY, function(index, elm) {
+        $.each(xyY, function(i, elm) {
             $("#xyY").append($("<td>").text( elm.toFixed(4) ));
         });
-        
-        $("#Lab").html($("<td>").text("Lab").addClass("dataLabel"));
+
         var Lab = XYZtoLab(XYZ, illumRef, observRef);
-        $.each(Lab, function(index, elm) {
+        $.each(Lab, function(i, elm) {
             $("#Lab").append($("<td>").text( elm.toFixed(2) ));
         });
     }
@@ -284,7 +292,7 @@ SB.macbeth = (function ($) {
         $("#colorTable tr td:contains('A1')").toggleClass("active");
         currentCell = "A1";
         illumRef = $("#illumRef").val();
-        /* TODO: use observRef as global parameter, set it from dropdown UI*/
+        /* TODO: use observRef as global parameter, set it from select UI*/
         observRef = "CIEobs31";
         showResults("A1");
     }
@@ -309,7 +317,7 @@ SB.macbeth = (function ($) {
 	    onCellClick:  onCellClick,
         setIllum: setIllum,
 	    init: init
-	}
+	};
 	
 }(jQuery));
 

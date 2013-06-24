@@ -1,3 +1,6 @@
+# source data (non distributable)
+data/
+
 # gedit backup files
 *~
 

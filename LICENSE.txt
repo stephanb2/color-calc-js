@@ -1,4 +1,5 @@
 This project is released under the GNU General Public License (GPL) version 3
+
 However, it contains data sets that are not provided under the GNU General
 Public License  (GPL) version 3.
 
@@ -32,6 +33,9 @@ License can be found in /usr/share/common-licenses/GPL file.
 ------------------------------------------------------------------------------
 
 CIE Reference Illuminant, Reference Observer and Reference White data
+
+Data provided is averaged to 10nm bands from:
+CIE Technical Report Colorimetry. CIE 15:2004 3rd edition
 
 Copyright (c) CIE 2000 - 2013
 CIE Central Bureau, Kegelgasse 27, A-1030 Vienna, Austria
