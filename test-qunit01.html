@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Color calculator</title>
+ 
+  <link rel="stylesheet" href="css/qunit.css">
+  <script src="js/qunit.js"></script>
+  <script src="js/jquery-1.9.1.min.js"></script>
+  <script src="./macbeth02test.js"></script>
+ 
+  <script>
+  test("matrix operations", function() {
+    var result;
+    
+    result = SB.calc.matrixMult([[1,1],[0,-1]], [[2,3],[4,5]]); 
+    deepEqual(result, [[6, 8], [-4, -5]], "2x2 matrix multiplication");
+    
+    result = SB.calc.matrixMult([[1,1],[0,-1]], [2,3]);
+    deepEqual(result, [5, -3], "matrix * vector multiplication");
+    
+    result = SB.calc.matrixMult([2,3], [[1,1],[0,-1]]);
+    deepEqual(result, [2, -1], "vector * matrix multiplication");
+    
+    result = SB.calc.diagMatrix([2, 3, 5]);
+    deepEqual(result, [[2,0,0],[0,3,0],[0,0,5]], "diagonal matrix from vector");
+  });
+  </script>
+  
+  <style>
+     #qunit { padding: 0 4em;}
+  </style>
+</head>
+<body>
+ 
+<div id="qunit"></div>
+
+</body>
+</html>
+
