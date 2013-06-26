@@ -1,15 +1,7 @@
-var SB = {};
+var SB = SB || {};
 
+SB.data = SB.data || {};
 
-SB = {
-    "data": {
-        "CIEobs31":{}, 
-        "CIEobs64":{}, 
-        "CIEil":{}, 
-        "GMCCavg30":{}, 
-        "CCdisplay":{} 
-    }
-};
 
 /*
  * CIE Standard Observer 1931 - 2 degrees
@@ -313,12 +305,16 @@ SB.macbeth = (function ($) {
     'use strict';
     
     var currentCell, illumRef, observRef, currentPlot;
-    var CCIds = ["A1", "A2", "A3", "A4", "A5", "A6",
-            "B1", "B2", "B3", "B4", "B5", "B6",
-            "C1", "C2", "C3", "C4", "C5", "C6",
-            "D1", "D2", "D3", "D4", "D5", "D6"];
-
-
+    /* both are unsupported by IE8
+    var CCIds = Object.keys(SB.data.CCdisplay);
+    var CCIds = [index for (index in SB.data.CCdisplay)];
+    */
+    var CCIds = $.map(SB.data.CCdisplay, function(val, key) {
+        return key;
+    });    
+    /* CCIds = ["A1", "A2", "A3", "A4", "A5", "A6", ... "D6"] */
+    
+    
     function buildCCTable(table_id) {
         var j, row, cell, cellcolor,
             ncols = 6;
@@ -369,8 +365,8 @@ SB.macbeth = (function ($) {
             ccColors = [],
             options, plot;
         
-        ccColors = $.map(CCIds, function(n, i) {
-            return SB.data.CCdisplay[ n ];
+        ccColors = $.map(CCIds, function(elm, i) {
+            return SB.data.CCdisplay[ elm ];
         });
         
         options = {
@@ -387,7 +383,6 @@ SB.macbeth = (function ($) {
             var XYZ = SB.calc.specToXYZ(SB.data.GMCCavg30, elm, illumRef, observRef);
             var Lab = SB.calc.XYZtoLab(XYZ, illumRef, observRef);
             vals.push([[Lab[1], Lab[2]]]);
-
         });
         
         return $.plot(placeholder,  vals , options);
@@ -409,6 +404,7 @@ SB.macbeth = (function ($) {
     function onCellClick(event) {
         $("#colorTable .active").toggleClass("active");
         $(this).toggleClass("active");
+        /* highlight and unhighlight parameters don't work in IE8  */
         currentPlot.unhighlight(CCIds.indexOf(currentCell), 0);
         currentCell = $(this).text();    
         showResults(currentCell);
@@ -422,11 +418,19 @@ SB.macbeth = (function ($) {
         currentPlot.highlight(CCIds.indexOf(currentCell), 0);
     } 
     
+    function setObserv(event) {
+        observRef = $("#observRef").val();
+        showResults(currentCell);
+        currentPlot = buildLabplot("#plotLab");
+        currentPlot.highlight(CCIds.indexOf(currentCell), 0);
+    } 
+    
 	
 	return {
 	    buildCCTable: buildCCTable,
 	    onCellClick:  onCellClick,
         setIllum: setIllum,
+        setObserv: setObserv,
         buildLabplot: buildLabplot,
 	    init: init
 	};
@@ -443,7 +447,7 @@ window.onload = function () {
    
    $("#colorTable tr td").on("click", SB.macbeth.onCellClick);
    $("#illumRef").on("change", SB.macbeth.setIllum);
-  
+   $("#observRef").on("change", SB.macbeth.setObserv);
 }
    
 
