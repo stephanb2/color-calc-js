@@ -1,8 +1,8 @@
 h1. JavaScript Color Calculator
 
-h2. Description
+p. You can try the calculator "online here.":http://www.stephanb.co.uk/color/
 
-p. You can try the calculator online on http://www.stephanb.co.uk/color/
+h2. Description
 
 p. This calculator displays colorimetric data the "Macbeth ColorChecker.":http://en.wikipedia.org/wiki/ColorChecker It is inspired by Bruce Lindbloom's "color calculators.":http://www.brucelindbloom.com/index.html?ColorCalculator.html
 
@@ -16,8 +16,7 @@ p. Plotting is done with jQuery "Flot":http://www.flotcharts.org/ Testing is in 
 h2. Data Sources
 
 p. *ColorChecker Spectral data:*
-Danny Pascale - averaged spectral data from 30 charts - CGATS format - 10nm
-BabelColor - "ColorChecker data.":http://www.babelcolor.com/main_level/ColorChecker.htm#ColorChecker_data
+Danny Pascale - averaged spectral data from 30 charts - CGATS format - 10nm - "ColorChecker data.":http://www.babelcolor.com/main_level/ColorChecker.htm#ColorChecker_data
 
 p. *CIE Illuminants and Standard Observer*
 Selected Colorimetric Tables on the CIE "downloads page.":http://www.cie.co.at/index.php/LEFTMENUE/DOWNLOADS
