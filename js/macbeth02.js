@@ -90,7 +90,10 @@ SB.data.CCdisplay = {
     "D1":"#f3f3f2", "D2":"#c8c8c8", "D3":"#a0a0a0", "D4":"#7a7a79", "D5":"#555555", "D6":"#343434"
 };
 
-
+/*----------------------------------------------------------------------------
+ * math functions and colorimetric transforms
+ *----------------------------------------------------------------------------
+ */
 
 SB.calc = (function ($) {
     'use strict';
@@ -287,10 +290,35 @@ SB.calc = (function ($) {
     }
     
     
+    function XYZtoLuv (XYZ, refWhite, observ) {
+        var XYZ_r, uv, uv_r, yr, L,
+            inv3 = 1/3,
+            epsilon = 216/24389,
+            kappa = 24389/27;
+            
+        function XYZtoUV (XYZ) {
+            var sum = XYZ[0] + 15*XYZ[1] + 3*XYZ[2];
+            if (sum === 0) { return [0, 0]; };
+            return [4*XYZ[0]/sum, 9*XYZ[1]/sum]
+        }
+        
+        XYZ_r = SB.data[observ][refWhite];
+        
+        uv = XYZtoUV(XYZ);
+        uv_r = XYZtoUV(XYZ_r);
+        yr = XYZ[1]/XYZ_r[1];
+        
+        L = (yr > epsilon) ? 116*Math.pow(yr, inv3) - 16 : kappa*yr;
+        
+        return [ L, 13*L*(uv[0]-uv_r[0]), 13*L*(uv[1]-uv_r[1]) ]
+    }
+    
+    
     return {
 	    specToXYZ: specToXYZ,
 	    XYZtoxyY:  XYZtoxyY,
         XYZtoLab: XYZtoLab,
+        XYZtoLuv: XYZtoLuv,
         matrixMult: matrixMult,
         diagMatrix: diagMatrix
 	};
@@ -298,8 +326,26 @@ SB.calc = (function ($) {
 }(jQuery));
 
 
+/*----------------------------------------------------------------------------
+ *  User interface
+ *----------------------------------------------------------------------------
+ */
 
-/*----- user interface ---------------------------*/
+/*----- configuration data----------------------------------------*/
+
+SB.conf = {
+    "CCTABLE_ID": "#colorTable",
+    "XYZ_ID": "#XYZ",
+    "XYY_ID": "#xyY",
+    "LAB_ID": "#Lab",
+    "LUV_ID": "#Luv",
+    "DATALABEL_CLASS": "dataLabel",
+    "PLOT_ID": "#plotLab",
+    "ILLUM_SELECT_ID": "#illumRef",
+    "OBSERV_SELECT_ID": "#observRef"
+};
+
+/*----- UI functions, DOM manipulation  ---------------------------*/
 
 SB.macbeth = (function ($) {
     'use strict';
@@ -315,6 +361,9 @@ SB.macbeth = (function ($) {
     /* CCIds = ["A1", "A2", "A3", "A4", "A5", "A6", ... "D6"] */
     
     
+    /*
+     * builds ColorChecker table in DOM
+     */
     function buildCCTable(table_id) {
         var j, row, cell, cellcolor,
             ncols = 6;
@@ -334,28 +383,35 @@ SB.macbeth = (function ($) {
     }
     
     /*
+     * displays numeric data in DOM
      *@requires: global variables: illumRef, observRef
      */
     function showResults(CC_Id) {
 
-        $("#XYZ").html($("<td>").text("XYZ").addClass("dataLabel"));
-        $("#xyY").html($("<td>").text("xyY").addClass("dataLabel"));
-        $("#Lab").html($("<td>").text("Lab").addClass("dataLabel"));
-
+        $(SB.conf.XYZ_ID).html($("<td>").text("XYZ").addClass("dataLabel"));
+        $(SB.conf.XYY_ID).html($("<td>").text("xyY").addClass("dataLabel"));
+        $(SB.conf.LAB_ID).html($("<td>").text("Lab").addClass("dataLabel"));
+        $(SB.conf.LUV_ID).html($("<td>").text("Luv").addClass("dataLabel"));
+        
         var XYZ = SB.calc.specToXYZ(SB.data.GMCCavg30, CC_Id, illumRef, observRef); 
         $.each(XYZ, function(i, elm) {
-            $("#XYZ").append($("<td>").text( elm.toFixed(4) ));
+            $(SB.conf.XYZ_ID).append($("<td>").text( elm.toFixed(4) ));
         });
         
         var xyY = SB.calc.XYZtoxyY(XYZ);
         $.each(xyY, function(i, elm) {
-            $("#xyY").append($("<td>").text( elm.toFixed(4) ));
+            $(SB.conf.XYY_ID).append($("<td>").text( elm.toFixed(4) ));
         });
 
 
         var Lab = SB.calc.XYZtoLab(XYZ, illumRef, observRef);
         $.each(Lab, function(i, elm) {
-            $("#Lab").append($("<td>").text( elm.toFixed(2) ));
+            $(SB.conf.LAB_ID).append($("<td>").text( elm.toFixed(2) ));
+        });
+        
+        var Luv = SB.calc.XYZtoLuv(XYZ, illumRef, observRef);
+        $.each(Luv, function(i, elm) {
+            $(SB.conf.LUV_ID).append($("<td>").text( elm.toFixed(2) ));
         });
     }
     
@@ -385,26 +441,25 @@ SB.macbeth = (function ($) {
             vals.push([[Lab[1], Lab[2]]]);
         });
         
-        return $.plot(placeholder,  vals , options);
+        return $.plot(placeholder, vals, options);
     }
     
     
     function init() {
-        $("#colorTable tr td:contains('A1')").toggleClass("active");
+        $(SB.conf.CCTABLE_ID + " tr td:contains('A1')").toggleClass("active");
         currentCell = "A1";
-        illumRef = $("#illumRef").val();
-        /* TODO: use observRef as global parameter, set it from select UI*/
-        observRef = "CIEobs31";
+        illumRef = $(SB.conf.ILLUM_SELECT_ID).val();
+        observRef = $(SB.conf.OBSERV_SELECT_ID).val();
         showResults("A1");
-        currentPlot = buildLabplot("#plotLab");
+        currentPlot = buildLabplot(SB.conf.PLOT_ID);
         currentPlot.highlight(0,0);
     }
 
 
     function onCellClick(event) {
-        $("#colorTable .active").toggleClass("active");
+        $(SB.conf.CCTABLE_ID + " .active").toggleClass("active");
         $(this).toggleClass("active");
-        /* highlight and unhighlight parameters don't work in IE8  */
+        /* highlight and unhighlight methods don't work in IE8  */
         currentPlot.unhighlight(CCIds.indexOf(currentCell), 0);
         currentCell = $(this).text();    
         showResults(currentCell);
@@ -412,16 +467,16 @@ SB.macbeth = (function ($) {
     }
     
     function setIllum(event) {
-        illumRef = $("#illumRef").val();
+        illumRef = $(SB.conf.ILLUM_SELECT_ID).val();
         showResults(currentCell);
-        currentPlot = buildLabplot("#plotLab");
+        currentPlot = buildLabplot(SB.conf.PLOT_ID);
         currentPlot.highlight(CCIds.indexOf(currentCell), 0);
     } 
     
     function setObserv(event) {
-        observRef = $("#observRef").val();
+        observRef = $(SB.conf.OBSERV_SELECT_ID).val();
         showResults(currentCell);
-        currentPlot = buildLabplot("#plotLab");
+        currentPlot = buildLabplot(SB.conf.PLOT_ID);
         currentPlot.highlight(CCIds.indexOf(currentCell), 0);
     } 
     
@@ -441,13 +496,13 @@ SB.macbeth = (function ($) {
 
 
 window.onload = function () {
-   SB.macbeth.buildCCTable("#colorTable");
+   SB.macbeth.buildCCTable(SB.conf.CCTABLE_ID);
    SB.macbeth.init();
    
    
-   $("#colorTable tr td").on("click", SB.macbeth.onCellClick);
-   $("#illumRef").on("change", SB.macbeth.setIllum);
-   $("#observRef").on("change", SB.macbeth.setObserv);
+   $(SB.conf.CCTABLE_ID + " tr td").on("click", SB.macbeth.onCellClick);
+   $(SB.conf.ILLUM_SELECT_ID).on("change", SB.macbeth.setIllum);
+   $(SB.conf.OBSERV_SELECT_ID).on("change", SB.macbeth.setObserv);
 }
    
 

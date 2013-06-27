@@ -13,6 +13,12 @@
   test("matrix operations", function() {
     var result;
     
+    result = SB.calc.matrixMult([[1,0],[0,1]], [[2,3],[4,5]]);
+    deepEqual(result, [[2,3],[4,5]], "unity matrix multiplication");  
+    
+    result = SB.calc.matrixMult([[0,1],[1,0]], [[2,3],[4,5]]);
+    deepEqual(result, [[4,5],[2,3]], "matrix transpose");   
+    
     result = SB.calc.matrixMult([[1,1],[0,-1]], [[2,3],[4,5]]); 
     deepEqual(result, [[6, 8], [-4, -5]], "2x2 matrix multiplication");
     
