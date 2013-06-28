@@ -459,8 +459,10 @@ SB.macbeth = (function ($) {
     function onCellClick(event) {
         $(SB.conf.CCTABLE_ID + " .active").toggleClass("active");
         $(this).toggleClass("active");
-        /* highlight and unhighlight methods don't work in IE8  */
+        /* highlight and unhighlight method calls with parameters don't work in IE8
         currentPlot.unhighlight(CCIds.indexOf(currentCell), 0);
+         */
+		currentPlot.unhighlight();
         currentCell = $(this).text();    
         showResults(currentCell);
         currentPlot.highlight(CCIds.indexOf(currentCell), 0);
