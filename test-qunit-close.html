@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>QUnit Close Enough Plugin</title>
+ 
+  <link rel="stylesheet" href="css/qunit.css">
+  <script src="js/qunit.js"></script>
+  <script src="js/qunit-close-enough.js"></script>
+  <!-- <script src="js/jquery-1.9.1.min.js"></script> -->
+
+  <script>
+  QUnit.module("Close vectors");
+  
+  test("matching vectors", function() {
+    var maxErr = 0.02;
+    
+    QUnit.assert.close(0.01, 0.02, maxErr, "floats");
+    QUnit.assert.close([0.01], [0.02], maxErr, "vectors");
+    QUnit.assert.close([0.01, 0.02, 0.01], [0, 0, 0], maxErr, "vectors");
+    QUnit.assert.close([0.01, true, "a"], [0, true, "a"], maxErr, "mixed type vectors");
+    QUnit.assert.close([[0.01, 0.02], [0.01, -0.01]], [[0, 0], [0, 0]], maxErr, "matrix");
+  });
+  
+  test("boundary and error cases", function() {
+    var maxErr = 0.1;
+    
+    QUnit.assert.close([], [], maxErr, "empty array");
+    QUnit.assert.close([0.01, 0.02, 0.01], 0, maxErr, "array with float");
+    QUnit.assert.close([0.01, 0.02, 0.01], [0, 0], maxErr, "array length");
+    QUnit.assert.close([[0.01, 0.02], [0.01, -0.01]], [0, 0], maxErr, "matrix with vector");
+  
+  });
+  
+  </script>
+  
+  <style>
+     #qunit { padding: 0 4em;}
+  </style>
+</head>
+
+
+<body>
+    <div id="qunit"></div>
+</body>
