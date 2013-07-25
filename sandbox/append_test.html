@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8"/>
+  <title>Macbeth Style Test</title>
+	
+  <style type="text/css">
+   body {
+      font-family: sans-serif;
+      font-size: 90%;
+      margin: 50px;
+      max-width: 800px;
+   }
+
+   table {
+       /* border-collapse: collapse; */
+   }
+
+   #colorTable{
+      border-spacing: 2px;
+   } 
+
+   table, th, td {
+      border: 2px solid #333;
+      min-width: 1em;
+      background: #333;
+   }
+
+   td {
+      background: #fff;
+      padding: 2px;
+      cursor: pointer;
+   }
+   
+   .active {
+      border: 2px solid #aaa;
+   }   
+   </style>
+
+  <script src="../js/jquery-1.9.1.min.js"></script>
+</head>
+
+
+<body>
+
+<table id="colorTable">
+  <tr>
+  	<td class="active" style="background: #f93; color: #f93;">1A</td>
+  	<td>1B</td>
+  	<td>1C</td>
+  </tr>
+</table>
+
+
+<table id="dataTable">
+</table>
+
+
+<script>
+ window.onload = function () {
+ 
+    var table,row;
+    table = $("<tbody>");
+    row = $("<tr>");
+    row.append($("<td>").text( "a" ));
+    row.append($("<td>").text( "b" ));
+    table.append(row);
+    row = $("<tr>");
+    row.append($("<td>").text( "u" ));
+    row.append($("<td>").text( "v" ));
+    table.append(row);
+    $("#dataTable").html(table);
+ }
+</script>
+<!--
+<script src="./macbeth02.js"></script>
+-->
+
+</body>

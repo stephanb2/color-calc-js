@@ -17,7 +17,7 @@
    <script src="js/jquery-1.9.1.min.js"></script>
    <script src="js/jquery.flot.js"></script>
    <!-- the following is required by IE 8 -->
-   <!--[if IE]><script src="js/excanvas.min.js"></script><![endif]-->
+   <!--[if lte IE 8]><script src="js/excanvas.min.js"></script><![endif]-->
 </head>
 
 
@@ -32,10 +32,14 @@
     <p>
     <label>Illuminant : </label>
     <select id="illumRef" autocomplete="off">
-        <option value="A">A</option>
-        <option value="C">C</option>
-        <option value="D50" selected="selected">D50</option>
-        <option value="D65">D65</option>
+        <option value="A">A Tungsten</option>
+        <!-- <option value="C">C</option> -->
+        <option value="D50" selected="selected">D50 Reference</option>
+        <option value="D65">D65 Daylight</option>
+        <option value="D75">D75 North sky daylight</option>
+        <option value="FL2">FL2 Cool White CRI 64</option>
+        <option value="FL7">FL7 Broad-band CRI 90</option>
+        <option value="FL11">FL11 Tri-band CRI 83</option>
     </select>
     </p><p>
     <label>Standard observer : </label>
@@ -44,7 +48,8 @@
         <option value="CIEobs64">CIE 1964 - 10&deg;</option>
     </select>
     </p>
-
+    
+    <div class="clearfloat"></div>
 </div><!-- side -->
 
 
@@ -59,21 +64,49 @@
     </table>
     
     <p>&nbsp;</p>
-    <h2>CIE a* b* plot</h2>
-    <div id="plotLab" style="width:400px;height:400px;"></div>
-    
-   
+
+    <ul class="tabs">
+        <li><a id="tab1">Lab plot</a></li>
+        <!--<li><a id="tab2">Luv plot</a></li>-->
+        <li><a id="tab3">RGB conversion</a></li>
+    </ul>
+    <div class="tabs-content" id="tab1C">
+         <div id="plotLab" style="width:400px;height:400px;"></div>
+    </div>
+    <!--<div class="tabs-content" id="tab2C"></div>-->
+    <div class="tabs-content" id="tab3C">
+        <label>RGB Space :</label>
+        <select id="RGBspace" autocomplete="off">
+            <option value="AdobeRGB">Adobe RGB</option>
+            <option value="AppleRGB">Apple RGB</option>
+            <option value="ColorMatchRGB">ColorMatch RGB</option>
+            <option value="PALSECAM">PAL / SECAM</option>
+            <option value="sRGB" selected="selected">sRGB</option>
+        </select>
+        &nbsp; &nbsp;
+        <label>Adaptation :</label>
+        <select id="Adapt" autocomplete="off">
+            <option value="None">None</option>
+            <option value="XYZscaling">XYZ Scaling</option>
+            <option value="VonKries">Von Kries</option>
+            <option value="Bradford" selected="selected">Bradford</option>
+        </select>
+        <p>&nbsp;</p>
+        <canvas id="canvasCC" width="500" height="350"></canvas>
+    </div>
 
     
+    <div class="clearfloat"></div>
 </div><!-- main -->
 
 
 <div id="footer">
     <p>This calculator is inspired by Bruce Linbloom's <a href="http://www.brucelindbloom.com/" target="_blank">color calculators.</a> Colorimetric data is computed from spectral data. </p>
     <p>jQuery <a href="http://www.flotcharts.org/" target="_blank">Flot</a> is used for plotting. <a href="./test-qunit01.html">Unit testing</a> is under way with <a href="http://qunitjs.com/" target="_blank">QUnit.</a> More details are on the <a href="https://github.com/stephanb2/color-calc-js">GitHub</a> page.</p>
-    <p>version 0.3 - by <a href="http://www.stephanb.co.uk/tech.html">Stephan Bourgeois.</a></p>
+    <p>version 0.4 - by <a href="http://www.stephanb.co.uk/tech.html">Stephan Bourgeois.</a></p>
 </div>
 
-<script src="js/macbeth02.js"></script>
+<script src="js/macbeth-data-10.js"></script>
+<script src="js/macbeth.js"></script>
 
 </body>

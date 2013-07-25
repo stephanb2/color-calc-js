@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset='UTF-8'>
+	
+	<title>jQuery Tabs</title>
+	
+	<style>
+#page-wrap {
+    width: 640px; 
+    margin: 100px auto;
+    font-family:Arial, Helvetica, sans-serif;
+    /* border: 1px solid #aff; */ /*for DBG*/
+}
+
+.tabs {
+    height: 34px; /* adjust tab height => adjust .tabs li a accordingly */
+    /* height field is required as all child elements are floated */
+    border-bottom: solid 1px #ccc;
+    margin: 0px;
+    padding-left: 0px; /* adjust left offset for all the tabs */
+}
+
+a {cursor:pointer;}
+
+.tabs li {
+    float: left;
+    list-style: none;
+    border: 1px solid #ccc;
+    border-bottom-width: 0;
+    margin-right: 5px;
+    border-top-left-radius: 3px;  
+    border-top-right-radius: 3px;
+    outline: none;
+}
+
+.tabs li a {
+   font-size: small;
+   font-weight: bold;
+   color: #5685bc;
+   display:block;
+   /* padding: (T R B L | T LR B | TB LR | TBLR);*/
+   padding: 8px 18px;
+   /* this.height = .tabs.height - (padding-top + padding-bottom) [ -1] */
+   height: 18px; /* 34 - (8 + 8) */
+   background: #fff;
+   border-top-left-radius:3px;
+   border-top-right-radius:3px;
+   text-decoration:none;
+   outline:none;
+
+}
+
+.tabs li a.inactive {
+    padding: 8px 18px;
+    height: 17px; /* 34 - (8 + 8) - 1 */
+    color:#666;
+    background: #eee;
+    outline:none;
+}
+
+.tabs li a:hover, #tabs li a.inactive:hover {
+    color: #5685bc;
+    outline:none;
+}
+
+.tabs-content {
+    clear:both;           
+    /* border: 1px solid #ccc; */ /*optional*/
+    border-top-width: 0;
+    text-align:left;
+    padding: 20px 10px;
+}
+    </style>
+    
+    <script src="../js/jquery-1.9.1.min.js"></script>
+</head>
+    
+    
+<body>
+
+	<div id="page-wrap">
+	
+	<ul class="tabs">
+        <li><a id="tab1">test1</a></li>
+        <li><a id="tab2">test2</a></li>
+        <li><a id="tab3">test3</a></li>
+    </ul>
+    <div class="tabs-content" id="tab1C">1 Some content</div>
+    <div class="tabs-content" id="tab2C">2 Some content</div>
+    <div class="tabs-content" id="tab3C">3 Some content</div>
+    
+    </div><!-- page-wrap -->
+    
+    <script src="./jquery_tabs01.js"></script>
+</body>
