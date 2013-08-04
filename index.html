@@ -11,17 +11,19 @@
    <meta name="author" content="Stephan Bourgeois">
    <meta name="created" content="2013-06-17">
    <meta name="description" content="Macbeth ColorChecker calculations and color space plot.">
-   <meta name="keywords" content="ColorChecker, color science, color space, calculator, color calculator, JavaScript, jQuery, ">
+   <meta name="keywords" content="Macbeth ColorChecker, ColorChecker, color science, color space, calculator, color calculator, JavaScript, jQuery">
 
    <link href="css/colorcalc.css" rel="stylesheet" type="text/css">
    <script src="js/jquery-1.9.1.min.js"></script>
    <script src="js/jquery.flot.js"></script>
    <!-- the following is required by IE 8 -->
    <!--[if lte IE 8]><script src="js/excanvas.min.js"></script><![endif]-->
+   <script src="js/macbeth-data-10.js"></script>
+   <script src="js/macbeth.js"></script>
 </head>
 
 
-<body>
+<body onload="SB.onload();">
 
 <div id="header"><h1>Macbeth ColorChecker Calculator</h1></div>
 
@@ -33,13 +35,14 @@
     <label>Illuminant : </label>
     <select id="illumRef" autocomplete="off">
         <option value="A">A Tungsten</option>
-        <!-- <option value="C">C</option> -->
+        <option value="C">C Daylight (replaced by D65)</option> -->
         <option value="D50" selected="selected">D50 Reference</option>
         <option value="D65">D65 Daylight</option>
         <option value="D75">D75 North sky daylight</option>
         <option value="FL2">FL2 Cool White CRI 64</option>
         <option value="FL7">FL7 Broad-band CRI 90</option>
         <option value="FL11">FL11 Tri-band CRI 83</option>
+        <option value="FL12">FL12 CFL lamp CRI 82</option>
     </select>
     </p><p>
     <label>Standard observer : </label>
@@ -67,14 +70,15 @@
 
     <ul class="tabs">
         <li><a id="tab1">Lab plot</a></li>
-        <!--<li><a id="tab2">Luv plot</a></li>-->
-        <li><a id="tab3">RGB conversion</a></li>
+        <li><a id="tab2">RGB conversion</a></li>
+        <li><a id="tab3">About</a></li>
     </ul>
+    
     <div class="tabs-content" id="tab1C">
          <div id="plotLab" style="width:400px;height:400px;"></div>
     </div>
-    <!--<div class="tabs-content" id="tab2C"></div>-->
-    <div class="tabs-content" id="tab3C">
+
+    <div class="tabs-content" id="tab2C" style="height:400px;">
         <label>RGB Space :</label>
         <select id="RGBspace" autocomplete="off">
             <option value="AdobeRGB">Adobe RGB</option>
@@ -92,21 +96,29 @@
             <option value="Bradford" selected="selected">Bradford</option>
         </select>
         <p>&nbsp;</p>
-        <canvas id="canvasCC" width="500" height="350"></canvas>
+        <canvas id="canvasCC" width="500" height="320"></canvas>
+        <p>Yellow triangles indicate out-of-gamut colors.</p>
     </div>
-
+    
+    <div class="tabs-content" id="tab3C">
+         <div style="height:400px; line-height:1.5;">
+         <p>The <a href="http://en.wikipedia.org/wiki/ColorChecker" target="_blank">Macbeth ColorChecker</a> is a device used for color calibration. This calculator lets you explore its appearance under a variety of lighting conditions.</p>
+         <p>All the calculations are done from averaged spectral reflectance data collected by <a href="http://www.babelcolor.com/main_level/ColorChecker.htm#ColorChecker_data" target="_blank">Danny Pascale.</a> The values produced by this calculator will differ slightly from official values published by X-Rite, or calculated by <a href="http://www.brucelindbloom.com/ColorCheckerCalculator.html" target="_blank">Bruce Lindbloom.</a> One of reasons being that the calculation are done in 10nm bands instead of the usual 5nm.</p>
+         <p>This application should run in any modern browser that supports HTML5 Canvas (Chrome, Firefox and Internet Explorer 9+). It is using jQuery and <a href="http://www.flotcharts.org/" target="_blank">Flot</a>. The <a href="https://github.com/stephanb2/color-calc-js">source code</a> is on GitHub.</p>
+         <p><a href="./test-qunit01.html">Unit testing</a> is done with <a href="http://qunitjs.com/" target="_blank">QUnit.</a> The <a href="https://github.com/JamesMGreene/qunit-assert-close" target="_blank">qunit-assert-close</a> plugin was extended to traverse arrays. This allows to check vector and matrix calculations with a given error tolerance.</p>
+         </div>
+    </div>
     
     <div class="clearfloat"></div>
 </div><!-- main -->
 
 
 <div id="footer">
-    <p>This calculator is inspired by Bruce Linbloom's <a href="http://www.brucelindbloom.com/" target="_blank">color calculators.</a> Colorimetric data is computed from spectral data. </p>
-    <p>jQuery <a href="http://www.flotcharts.org/" target="_blank">Flot</a> is used for plotting. <a href="./test-qunit01.html">Unit testing</a> is under way with <a href="http://qunitjs.com/" target="_blank">QUnit.</a> More details are on the <a href="https://github.com/stephanb2/color-calc-js">GitHub</a> page.</p>
-    <p>version 0.4 - by <a href="http://www.stephanb.co.uk/tech.html">Stephan Bourgeois.</a></p>
+    <p>This calculator is inspired by Bruce Linbloom's <a href="http://www.brucelindbloom.com/" target="_blank">color calculators.</a></p>
+    <p>You can run <a href="./test-qunit01.html">unit tests here.</a> And see the <a href="https://github.com/stephanb2/color-calc-js">source code</a> on GitHub.
+    <p>version 0.5 - by <a href="http://www.stephanb.co.uk/tech.html">Stephan Bourgeois.</a></p>
 </div>
 
-<script src="js/macbeth-data-10.js"></script>
-<script src="js/macbeth.js"></script>
+
 
 </body>

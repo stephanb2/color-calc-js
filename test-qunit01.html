@@ -2,18 +2,18 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Color calculator</title>
+  <title>ColorChecker Calculator Tests</title>
  
   <link rel="stylesheet" href="css/qunit.css">
   <script src="js/qunit.js"></script>
   <script src="js/qunit-close-enough.js"></script>
   <script src="js/jquery-1.9.1.min.js"></script>
   <script src="js/macbeth-data-10.js"></script>
-  <script src="js/macbeth-test.js"></script>
+  <script src="js/macbeth.js"></script>
  
   <script>
   module("math functions");
-  test("SB.calc.matrixMult and SB.calc.diagMatrix", function() {
+  test("SB.calc.matrixMult, SB.calc.diagMatrix", function() {
     var result;
     
     result = SB.calc.matrixMult([[1,0],[0,1]], [[2,3],[4,5]]);
@@ -36,7 +36,7 @@
   });
   
   test("SB.calc.sumProduct", function() {
-    var fA = {
+    var ramp = {
         "start":0, "end":90, "step":10,
         "x":[0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
     };
@@ -54,13 +54,13 @@
           "x":[1, 1, 1, 1, 1 ]
     };
           
-    equal(SB.calc.sumProduct(fdirac, "x", funity, "x"), 1, "dirac * unity");
-    equal(SB.calc.sumProduct(fA, "x", funity, "x"), 5*9, "ramp * unity");
-    equal(SB.calc.sumProduct(funity, "x", funity, "x"), 10, "unity ^ 2");
-    equal(SB.calc.sumProduct(funity, "x", funity, "y"), 5, "unity * step");
-    equal(SB.calc.sumProduct(funity, "x", funityB, "x"), 4, "unity ^ 2 limited interval");
-    equal(SB.calc.sumProduct(fA, "x", funity, "y"), 8+2, "ramp * step");
-    equal(SB.calc.sumProduct(fA, "x", funityB, "x"), 14, "ramp * step");
+    equal(SB.calc.sumProduct(fdirac, "x", funity, "x"), 1, "inner product: dirac * unity");
+    equal(SB.calc.sumProduct(ramp, "x", funity, "x"), 5*9, "inner product: ramp * unity");
+    equal(SB.calc.sumProduct(funity, "x", funity, "x"), 10, "inner product: unity ^ 2");
+    equal(SB.calc.sumProduct(funity, "x", funity, "y"), 5, "inner product: unity * step");
+    equal(SB.calc.sumProduct(funity, "x", funityB, "x"), 4, "inner product: unity ^ 2 limited interval");
+    equal(SB.calc.sumProduct(ramp, "x", funity, "y"), 8+2, "inner product: ramp * step");
+    equal(SB.calc.sumProduct(ramp, "x", funityB, "x"), 14, "inner product: ramp * step");
   });  
   
   
@@ -80,11 +80,11 @@
   
   
   module("Colorimetric calculations");
-  test("SB.calc.XYZtoRGB", function() {
-    var expect, delta, maxErr;
+  test("SB.calc.XYZtoRGB, SB.calc.specToXYZ, SB.calc.adaptMatrix", function() {
+    var expect, delta, maxErr, RGB, XYZ, Mat;
     maxErr = 0.000001;
     
-    var RGB = SB.calc.XYZtoRGB([0.1181, 0.1033, 0.0523], "D65", "AdobeRGB");
+    RGB = SB.calc.XYZtoRGB([0.1181, 0.1033, 0.0523], "D65", "AdobeRGB");
     expect = [0.440505, 0.319933, 0.237889];
     //delta = 0;
     //jQuery.each(RGB, function(i, val) { delta = Math.max(delta, Math.abs(val - expect[i])); });
@@ -93,39 +93,59 @@
     
     RGB = SB.calc.XYZtoRGB([0.5602, 0.5939, 0.0933], "D65", "AppleRGB");
     expect = [0.909756, 0.737432, -0.078888];
-    delta = 0;
-    jQuery.each(RGB, function(i, val) { delta = Math.max(delta, Math.abs(val - expect[i])); });
-    ok( delta <= maxErr, "XYZ to AppleRGB. Blue channel clipping. Max error="+delta);
+    QUnit.assert.close(RGB, expect, maxErr, "XYZ to AppleRGB. Blue channel clipping.");
     
     maxErr = 0.001;
-    var XYZ = SB.calc.specToXYZ(SB.data.GMCCavg30, "W", "A", "CIEobs31");
+    XYZ = SB.calc.specToXYZ(SB.data.GMCCavg30, "W", "A", "CIEobs31");
     expect = [1.0985, 1.00, 0.35585];
     QUnit.assert.close(XYZ, expect, maxErr, "White point of A illuminant from spectrum");
     
-    var XYZ = SB.calc.specToXYZ(SB.data.GMCCavg30, "W", "D65", "CIEobs31");
+    XYZ = SB.calc.specToXYZ(SB.data.GMCCavg30, "W", "D65", "CIEobs31");
     expect = [0.95047, 1.00, 1.08883];
     QUnit.assert.close(XYZ, expect, maxErr, "White point of D65 illuminant from spectrum");
     
-    var XYZ = SB.calc.specToXYZ(SB.data.GMCCavg30, "W", "FL2", "CIEobs31");
+    XYZ = SB.calc.specToXYZ(SB.data.GMCCavg30, "W", "D75", "CIEobs64");
+    expect = [0.94427, 1.00, 1.20710];
+    QUnit.assert.close(XYZ, expect, maxErr, "White point of D75 illuminant for CIE 1964 observer");
+    
+    maxErr = 0.01;
+    XYZ = SB.calc.specToXYZ(SB.data.GMCCavg30, "W", "FL2", "CIEobs31");
     expect = [0.99186, 1.00000, 0.67393];
     QUnit.assert.close(XYZ, expect, maxErr, "White point of FL2 illuminant from spectrum");    
     
-    var XYZ = SB.calc.specToXYZ(SB.data.GMCCavg30, "W", "FL7", "CIEobs31");
+    XYZ = SB.calc.specToXYZ(SB.data.GMCCavg30, "W", "FL7", "CIEobs31");
     expect = [0.95041, 1.00000, 1.08747];
     QUnit.assert.close(XYZ, expect, maxErr, "White point of FL7 illuminant from spectrum");    
     
-    var XYZ = SB.calc.specToXYZ(SB.data.GMCCavg30, "W", "D75", "CIEobs64");
-    expect = [0.94427, 1.00, 1.20710];
-    QUnit.assert.close(XYZ, expect, maxErr, "White point of D75 illuminant for CIE 1964 observer"); 
     
     maxErr = 0.002;
     var Mat = SB.calc.adaptMatrix("A", "D65", "CIEobs31", "VonKries");
     expect = [[0.9394987, -0.2339150, 0.4281177], [-0.0256939, 1.0263828, 0.0051761], [0.0000000, 0.0000000, 3.0598005]];
-    QUnit.assert.close(Mat, expect, maxErr, "Von Kries Adaptation from A to D65");
-    
-    
+    QUnit.assert.close(Mat, expect, maxErr, "Von Kries Adaptation matrix from A to D65")
   });
   
+  
+  QUnit.module("qunit-close-enough");
+  
+  test("Matching vectors and matrices", function() {
+    var maxErr = 0.02;
+    
+    QUnit.assert.close(0.01, 0.02, maxErr, "compare floats");
+    QUnit.assert.close([0.01], [0.02], maxErr, "compare vectors");
+    QUnit.assert.close([0.01, 0.02, 0.01], [0, 0, 0], maxErr, "compare vectors");
+    QUnit.assert.close([0.01, true, "a"], [0, true, "a"], maxErr, "compare mixed type vectors");
+    QUnit.assert.close([[0.01, 0.02], [0.01, -0.01]], [[0, 0], [0, 0]], maxErr, "compare matrices");
+    QUnit.assert.close([], [], maxErr, "empty array boundary case");
+  });
+  
+  test("Error cases -- all these cases should fail", function() {
+    var maxErr = 0.02;
+    QUnit.assert.close([0.01, 0.02, 0.03], [0, 0, 0], maxErr, "delta exceeds maxError");
+    QUnit.assert.close([0.01, 0.02, 0.01], 0.01, maxErr, "compare array with float");
+    QUnit.assert.close([0.01, 0.02, 0.01], [0.01, 0.02], maxErr, "compare arrays of different length");
+    QUnit.assert.close([[0.01, 0.02], [0.01, -0.01]], [0.01, 0.02], maxErr, "compare matrix with vector");
+  
+  });
   </script>
   
   <style>

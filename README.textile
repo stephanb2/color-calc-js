@@ -6,7 +6,7 @@ h2. Description
 
 p. This calculator displays colorimetric data for color patches of the "Macbeth ColorChecker.":http://en.wikipedia.org/wiki/ColorChecker It is inspired by Bruce Lindbloom's "color calculators.":http://www.brucelindbloom.com/index.html?ColorCalculator.html
 
-p. Colorimetric data is calculated from spectral data in 10nm bands. CIE illuminants data has been averaged to 10nm. You can compare the results with the values on the "Wikipedia page":http://en.wikipedia.org/wiki/ColorChecker by choosing: Illiminant: C, Standard Observer: CIE 1931.
+p. Colorimetric data is calculated from spectral data in 10nm bands. CIE illuminants data has been averaged to 10nm. You can compare the results with the values on the "Wikipedia page":http://en.wikipedia.org/wiki/ColorChecker by choosing: Illuminant: C, Standard Observer: CIE 1931.
 
 p. Plotting is done with jQuery "Flot.":http://www.flotcharts.org/ Some testing is done with "QUnit.":http://qunitjs.com/
 
@@ -20,6 +20,8 @@ p. *CIE Illuminants and Standard Observer*
 Selected Colorimetric Tables on the CIE "downloads page.":http://www.cie.co.at/index.php/LEFTMENUE/DOWNLOADS
 
 CIE Technical Report: Colorimtery - CIE 15:2004, 3rd Edition
+
+Munsell Color Science Laboratory. CIE Standard Colorimetric Observer and Standard Illuminant "Data":http://www.cis.rit.edu/research/mcsl2/online/cie.php
 
 h2. Links
 

@@ -9,6 +9,15 @@ var SB = SB || {};
 
 SB.calc = (function ($) {
     'use strict';
+    
+    /*
+     * pre-compute white points of illuminants
+     */
+    jQuery.each(["A", "C", "D50", "D65", "D75", "FL2","FL7", "FL11", "FL12"],
+        function(i, val) {
+            SB.data.CIEobs31[val] = specToXYZ(SB.data.CIEil, "E", val, "CIEobs31");
+            SB.data.CIEobs64[val] = specToXYZ(SB.data.CIEil, "E", val, "CIEobs64");
+    });
 
 	/*
 	 * WARNING: this implementation provides no interpolation
@@ -235,10 +244,10 @@ SB.calc = (function ($) {
         };
         
         //FIXME: Fluorescents don't match well the tabulated XYZ white points
-        //use this if SB.data[observ][sourceW] or SB.data[observ][destW] is undefined
+        //also use this if SB.data[observ][sourceW] or SB.data[observ][destW] is undefined
         
-        XYZ_S = specToXYZ(SB.data.GMCCavg30, "W", sourceW, observ);
-        XYZ_D = specToXYZ(SB.data.GMCCavg30, "W", destW, observ);
+        XYZ_S = specToXYZ(SB.data.CIEil, "E", sourceW, observ);
+        XYZ_D = specToXYZ(SB.data.CIEil, "E", destW, observ);
         
         rhoS = matrixMult(SB.data[method].MA, XYZ_S);
         rhoD = matrixMult(SB.data[method].MA, XYZ_D);  
@@ -280,21 +289,6 @@ SB.calc = (function ($) {
     }
 
     
-    function RGBto8Bits (RGB) { 
-        return jQuery.map(RGB, function(val,i) { 
-            return Math.max(0, Math.min(255, Math.round(255 * val)));
-            });
-    }
-    
-    function isRGBclip (RGB) {
-        var result = false;
-        jQuery.each(RGB, function(i, val) {
-            if (val < 0 || val > 1) { result = true };
-        });
-        
-        return result;
-    }
-    
     return {
         sumProduct: sumProduct, //exposed for testing
 	    specToXYZ: specToXYZ,
@@ -303,8 +297,6 @@ SB.calc = (function ($) {
         XYZtoLuv: XYZtoLuv,
         XYZtoRGB: XYZtoRGB,
         adaptMatrix: adaptMatrix,
-        RGBto8Bits:RGBto8Bits,
-        isRGBclip: isRGBclip,
         matrixMult: matrixMult,
         diagMatrix: diagMatrix
 	};
@@ -332,7 +324,8 @@ SB.conf = {
     "RGB_SPACE_ID": "#RGBspace",
     "ADAPTATION_ID": "#Adapt",
     "TABS_CLASS": ".tabs",
-    "TABS_CONTENT_CLASS": ".tabs-content"
+    "TABS_CONTENT_CLASS": ".tabs-content",
+    "CANVAS_WIDTH": 440,
 };
 
 
@@ -371,33 +364,52 @@ SB.canvas = (function() {
     'use strict';
     var canvas, context;
     
+    
     function init(canvas_id) {
         canvas = document.getElementById(canvas_id);
         context = canvas.getContext("2d");
-
-    //rounded rectangle method
-    if (!context.constructor.prototype.fillRoundedRect) {
-      // Extend the canvaseContext class with a fillRoundedRect method
-      context.constructor.prototype.fillRoundedRect = 
-        function (x, y, w, h, rad, fill, stroke) {
-          if (typeof(rad) == "undefined") rad = 0;
-          this.beginPath();
-          this.moveTo(x+rad, y);
-          this.arcTo(x+w, y,   x+w, y+h, rad);
-          this.arcTo(x+w, y+h, x,   y+h, rad);
-          this.arcTo(x,   y+h, x,   y,   rad);
-          this.arcTo(x,   y,   x+w, y,   rad);
-          if (stroke) this.stroke();  // Default to no stroke
-          if (fill || typeof(fill)=="undefined") this.fill();  // Default to fill
-      }; // end of fillRoundedRect method
-    }; //endif
-    
+        
+        //rounded rectangle method
+        if (!context.constructor.prototype.fillRoundedRect) {
+            // Extend the canvas Context class with a fillRoundedRect method
+            context.constructor.prototype.fillRoundedRect = 
+            function (x, y, w, h, rad, fill, stroke) {
+                if (typeof(rad) == "undefined") rad = 0;
+                this.beginPath();
+                this.moveTo(x+rad, y);
+                this.lineTo(x+w-rad, y);
+                this.arc(x+w-rad, y+rad, rad, 1.5*Math.PI, 0);
+                this.lineTo(x+w, y+h-rad);
+                this.arc(x+w-rad, y+h-rad, rad, 0, 0.5*Math.PI);
+                this.lineTo(x+rad, y+h);
+                this.arc(x+rad, y+h-rad, rad, 0.5*Math.PI, 1*Math.PI);
+                this.lineTo(x, y+rad);
+                this.arc(x+rad, y+rad, rad, 1*Math.PI, 1.5*Math.PI);
+                if (stroke) this.stroke();  // Default to no stroke
+                if (fill || typeof(fill)=="undefined") this.fill();  // Default to fill
+            }; // end of fillRoundedRect method
+        }; //endif
     } //init function
     
     
+    function RGBto8Bits (RGB) { 
+        return jQuery.map(RGB, function(val,i) { 
+            return Math.max(0, Math.min(255, Math.round(255 * val)));
+            });
+    }
+    
+    
+    function isRGBclip (RGB) {
+        var result = false;
+        jQuery.each(RGB, function(i, val) {
+            if (val < 0 || val > 1) { result = true };
+        });
+        return result;
+    }
+    
     /*
-     * colors: a 2D array of [R, G, B] array triplets in [0..1] range
-     * width: width of output in pixels
+     * @param Array   colors: 2D array of [R, G, B] array triplets in [0..1] range
+     * @param Integer width: width of output in pixels
      */
     function drawColArray(width, colors) {
         var rows, cols,
@@ -405,25 +417,25 @@ SB.canvas = (function() {
         
         rows = colors.length;
         cols = colors[0].length;
-        gap = width * 0.02;
+        gap = Math.round(width * 0.02);
         
-        rsize = (width - (cols + 2) * gap) / cols;
+        rsize = Math.round((width - (cols + 2) * gap) / cols);
         height = rows * (gap + rsize) + 2 * gap;
         
         context.fillStyle = "rgb(32, 32, 32)"
-        context.fillRoundedRect(0, 0, width, height, gap);
+        context.fillRoundedRect(0, 0, width, height, 1.5 * gap);
         
-        y = 1.5*gap;
+        y = Math.round(1.5 * gap);
         for (i = 0; i < rows; i += 1) {
-            x = 1.5*gap;
+            x = Math.round(1.5 * gap);
             for (j = 0; j < cols; j += 1) {
-                RGB = SB.calc.RGBto8Bits(colors[i][j]);
+                RGB = RGBto8Bits(colors[i][j]);
                 //square colour patch
                 context.fillStyle = "rgb(" + RGB[0] + ", " + RGB[1] + ", " + RGB[2] + ")";
                 context.fillRect(x, y, rsize, rsize);
                 
                 //clipping indicator
-                if ( SB.calc.isRGBclip(colors[i][j]) ) {
+                if ( isRGBclip(colors[i][j]) ) {
                     context.fillStyle = "rgb(255,255,0)";
                     context.beginPath();
                     context.moveTo(x,y);
@@ -546,7 +558,7 @@ SB.macbeth = (function ($) {
         var colors = [];
         
         colors = buildRGBcolors();
-        SB.canvas.drawColArray(400, colors);
+        SB.canvas.drawColArray(SB.conf.CANVAS_WIDTH, colors);
     }
     
     /*
@@ -598,7 +610,7 @@ SB.macbeth = (function ($) {
                 points: { show: true, radius: 5 }
             },
             xaxis: { min: -75, max: 75 },
-            yaxis: { min: -85, max: 85, position: "left" },
+            yaxis: { min: -87, max: 87, position: "left" },
             colors: ccColors
         };
         
@@ -680,7 +692,8 @@ SB.macbeth = (function ($) {
 
 
 
-window.onload = function () {
+//window.onload = function () {
+SB.onload = function() {
    SB.macbeth.buildCCTable(SB.conf.CCTABLE_ID);
    SB.macbeth.init();
    
@@ -694,7 +707,6 @@ window.onload = function () {
    $(SB.conf.ADAPTATION_ID).on("change", SB.macbeth.setAdapt);
    
    SB.canvas.init("canvasCC");
-   // SB.canvas.drawTest();
    SB.macbeth.CCtoCanvas();
 }
    
