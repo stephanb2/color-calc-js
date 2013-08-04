@@ -1,4 +1,4 @@
-h1. JavaScript Color Calculator
+h1. Macbeth Color Calculator
 
 p. Try the calculator "here.":http://www.stephanb.co.uk/color/
 
